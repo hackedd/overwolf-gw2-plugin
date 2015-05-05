@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Overwolf Guild Wars 2 Plugin App</title>
+  </head>
+  <body>
+    <embed id="plugin" type="application/x-overwolf-gw2-plugin" width="0" height="0">
+
+    <div id="messages"></div>
+    <dl>
+    </dl>
+
+    <p>
+      <a href="index.html">Reload</a>
+      <a href="empty.html">Unload</a>
+    </p>
+
+    <script src="jquery-2.1.3.min.js"></script>
+    <script>
+      $(function() {
+          var plugin = $("#plugin")[0],
+              messages = $("#messages"),
+              fields = [
+                  "uiVersion", "uiTick", "name",
+                  "fAvatarPosition", "fAvatarFront", "fAvatarTop",
+                  "fCameraPosition", "fCameraFront", "fCameraTop",
+                  "identity", "serverAddress", "mapId", "mapType",
+                  "shardId", "instance", "buildId", "description"
+              ],
+              coordinateFields = [
+                  "fAvatarPosition", "fAvatarFront", "fAvatarTop",
+                  "fCameraPosition", "fCameraFront", "fCameraTop"
+              ],
+              dl = $("dl"),
+              f = {};
+
+          function addMessage(message) {
+              $("<p />").text(message).appendTo(messages);
+          }
+
+          function update() {
+              $.each(fields, function () {
+                  var key = this.toString(),
+                      value = plugin[key];
+                  if (value !== undefined) {
+                      if (coordinateFields.indexOf(key) !== -1) {
+                          f[this].text("x: " + value.x + " y: " + value.y + " z: " + value.z);
+                      } else {
+                          f[this].text(value);
+                      }
+                  }
+              });
+          }
+
+          function detectPlugin() {
+              var i = 0;
+              for (i = 0; i < navigator.plugins.length; i += 1) {
+                  if (navigator.plugins[i].name == "Overwolf GW2 Plugin") {
+                      return true;
+                  }
+              }
+              return false;
+          }
+
+          if (!detectPlugin()) {
+              if (window.location.hash === "#refresh") {
+                  addMessage("Plugin could not be loaded.");
+                  return;
+              }
+
+              addMessage("Plugin not loaded, refreshing and reloading the page.");
+
+              navigator.plugins.refresh(false);
+              window.location.hash = "#refresh";
+              window.location.reload();
+          }
+
+          $.each(navigator.plugins, function () {
+              if (this.name == "Overwolf GW2 Plugin") {
+                  pluginFound = true;
+              }
+          })
+
+          /* Create a definition list with items for each of the fields. */
+          $.each(fields, function () {
+              $("<dt />").text(this).appendTo(dl);
+              f[this] = $("<dd />").appendTo(dl);
+          });
+
+          setInterval(update, 1000);
+      });
+    </script>
+  </body>
+</html>

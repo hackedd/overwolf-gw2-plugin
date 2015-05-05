@@ -1,0 +1,15 @@
+# Visual Studio files
+Debug/
+Release/
+*.user
+*.sdf
+*.opensdf
+*.suo
+*.aps
+
+# Executables
+*.exe
+*.dll
+
+# XULRunner SDK
+xulrunner-sdk/

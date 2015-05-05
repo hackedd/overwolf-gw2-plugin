@@ -1,0 +1,37 @@
+{
+  "manifest_version": "1",
+  "type": "WebApp",
+
+  "meta": {
+    "name": "Guild Wars 2 Plugin App",
+    "version": "1.0.0.1",
+    "minimum-overwolf-version": "0.77.4.0",
+    "author": "Paul Hooijenga",
+    "icon": "icon.png",
+    "icon_gray": "icon-gray.png",
+    "description": "Sample app for using the Guild Wars 2 NPAPI plugin"
+  },
+
+  "data": {
+    "start_window": "index",
+    "windows": {
+      "index": {
+        "file": "index.html",
+        "transparent": false,
+        "resizable": true,
+        "show_in_taskbar": true,
+        "size": {
+          "width": 200,
+          "height": 400
+        },
+        "start_position": {
+          "Top": 100,
+          "Left": 300
+        }
+      }
+    },
+    "plugins": [
+      "npOverwolfGW2Plugin.dll"
+    ]
+  }
+}
